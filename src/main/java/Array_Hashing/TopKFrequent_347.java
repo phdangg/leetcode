@@ -5,25 +5,18 @@ import java.util.*;
 public class TopKFrequent_347 {
     public int[] topKFrequent(int[] nums, int k) {
         List<Integer>[] bucket = new List[nums.length+1];
-        Map<Integer, Integer> freq = new HashMap<>();
-        for (int n: nums)
-            freq.put(n,freq.getOrDefault(n,0)+1);
-
-        for (Map.Entry<Integer, Integer> entry : freq.entrySet()){
-            int val = entry.getValue();
-            if (bucket[val] == null) bucket[val] = new ArrayList<>();
-            bucket[val].add(entry.getKey());
+        for (int i = 0; i < bucket.length; i++) bucket[i] = new ArrayList<>();
+        Map<Integer,Integer> freq = new HashMap<>();
+        for (int num : nums) {
+            freq.put(num, freq.getOrDefault(num, 0) + 1);
         }
-        int[] result = new int[k];
-        int pos = 0;
-        for (int i = bucket.length - 1; i >= 0; i--){
-            if (bucket[i] == null) continue;
-            for (int j = 0; j < bucket[i].size() && pos < k; j++){
-                result[pos] = bucket[i].get(j);
-                pos++;
-            }
+        for (Map.Entry<Integer,Integer> entry : freq.entrySet()){
+            bucket[entry.getValue()].add(entry.getKey());
         }
-        return result;
+        List<Integer> result = new ArrayList<>();
+        for (int i = bucket.length - 1; i >= 0 && k >= 0; i--)
+            if (!bucket[i].isEmpty()) result.addAll(bucket[i]);
+        return result.stream().mapToInt(Integer::new).toArray();
     }
 
     public static void main(String[] args) {
