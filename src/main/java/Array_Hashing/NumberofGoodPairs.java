@@ -15,16 +15,10 @@ public class NumberofGoodPairs {
 
         int[] c = new int[max+1];
         for (int num : nums) c[num]++;
-        for (int i = 1; i < c.length; i++)
-            c[i] += c[i-1];
-        int[] b = new int[c.length];
-        System.arraycopy(c,0,b,0,c.length);
-        for (int i = nums.length-1; i >= 0;i--){
-            c[nums[i]]--;
-        }
+
         int result = 0;
-        for (int i = 0; i < c.length; i++){
-            result += binomi(b[i]-c[i],2);
+        for (int n : c) {
+            result += binomi(n, 2);
         }
 
         return result;
